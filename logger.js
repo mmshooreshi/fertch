@@ -48,7 +48,6 @@ const transport = new winston.transports.DailyRotateFile({
   format: logFormat,
 });
 
-
 // Define log formats for different log types using chalk.bgHex and chalk hex colorings
 const fileUploadSuccessFormat = winston.format.printf(({ timestamp, level, message }) => {
   return chalk.bgHex('#d4edda').hex('#155724')(`${timestamp} [${level}]: File upload success: ${message}`);
@@ -94,6 +93,11 @@ const processErrorFormat = winston.format.printf(({ timestamp, level, message })
   return chalk.bgHex('#dc3545').hex('#ffffff').bold(`${timestamp} [${level}]: Process error: ${message}`);
 });
 
+const cacheFoundFormat = winston.format.printf(({ timestamp, level, message }) => {
+  return chalk.bgHex('#1b1b1b').hex('#00ff00').bold(`${timestamp} [${level}]: Cache found: ${message}`);
+});
+
+
 // Custom format combining necessary winston formats and chalk styles
 const customLogFormat = winston.format.combine(
   winston.format.colorize(),
@@ -122,6 +126,8 @@ const customLogFormat = winston.format.combine(
         return processStartFormat.transform(info);
       case 'processError':
         return processErrorFormat.transform(info);
+      case 'cacheFound':
+        return cacheFoundFormat.transform(info);  
       default:
         return logFormat.transform(info);
     }

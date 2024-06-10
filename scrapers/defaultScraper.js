@@ -6,7 +6,8 @@ const defaultScraper = async (url) => {
   try {
     const cachedData = await get(url);
     if (cachedData && cachedData.status !== 404) {
-      logger.info(`Returning cached data for URL: ${url}`);
+      logger.info(`Returning cached data for URL: ${url}`, { messageType: 'cacheFound' });
+
       return cachedData;
     } else if (cachedData && cachedData.status === 404) {
       logger.info(`Cached data for URL: ${url} is 404, retrying...`);

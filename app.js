@@ -52,7 +52,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *       400:
  *         description: Invalid input
  */
-app.get('/scrape', async (req, res) => {
+app.get('/cache', async (req, res) => {
   const url = req.query.url;
   const download = req.query.download
 
@@ -99,6 +99,12 @@ app.get('/scrape', async (req, res) => {
  *         required: true
  *         description: URL of the page to scrape and analyze colors
  *       - in: query
+ *         name: count
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: count of colors in palette
+ *       - in: query
  *         name: download
  *         schema:
  *           type: boolean
@@ -112,11 +118,9 @@ app.get('/scrape', async (req, res) => {
  */
 
 
-const getImageColors = async (imagePath) => {
+const getImageColors = async (imagePath, count=3) => {
   try {
-    const result = await getImagePalette(imagePath, 3);
-    // console.log('Palette:', result.palette);
-    console.log('Palette Image Path:', result.paletteImagePath);
+    const result = await getImagePalette(imagePath, count);
     return result
   } catch (error) {
     logger.error(`Error extracting colors for image: ${imagePath}`, { error: error.toString() });
@@ -129,7 +133,9 @@ const getImageColors = async (imagePath) => {
 
 app.get('/color', async (req, res) => {
   const url = req.query.url;
+  const count = req.query.count
   const download = req.query.download
+
 
 
   if (!url) {
@@ -143,7 +149,7 @@ app.get('/color', async (req, res) => {
     const screenshotPath = await defaultScraper(url);
     logger.info(`ScreenShot path: ${screenshotPath}`, { messageType: 'fileSaveSuccess' });
 
-    const { palette, paletteImagePath } = await getImageColors(screenshotPath);
+    const { palette, paletteImagePath } = await getImageColors(screenshotPath, count ? count : undefined);
 
     // Convert palette to hex colors
     const paletteHex = palette.map(([r, g, b]) => `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`);
