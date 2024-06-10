@@ -5,7 +5,7 @@ const swaggerOptions = {
         version: '1.0.0',
         description: 'API for web scraping using Puppeteer and various plugins',
       },
-      basePath: '/fertch',
+      basePath: '/',
     },
     apis: ['./app.js'],
   };

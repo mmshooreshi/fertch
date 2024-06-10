@@ -16,6 +16,9 @@ import { uploadToImgur } from '../utils/imgurUtils.js';
 import { uploadToServer } from '../utils/upload.js';
 import {formatTimestamp} from '../utils/time.js'
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 puppeteer.use(puppeteerExtraStealth());
 puppeteer.use(puppeteerExtraAnonymizeUA());
@@ -32,7 +35,7 @@ puppeteer.use(puppeteerExtraUserPreferences({
 puppeteer.use(puppeteerExtraAdblocker());
 
 const ignoredResources = ['image', 'stylesheet', 'font'];
-const ignoreFlag = false
+const ignoreFlag = process.env.IGNORE_FLAG === 'true'
 
 export const configureCluster = async () => {
   const cluster = await Cluster.launch({
