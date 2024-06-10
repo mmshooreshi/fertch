@@ -9,7 +9,7 @@ const __dirname = path.resolve();
 
 const extractColorPalette = async (imagePath, count) => {
   try {
-    const result = await ColorThief.getPalette(imagePath, count);
+    const result = await ColorThief.getPalette(imagePath, colorCount = count);
     if (!result ) {
       throw new Error('Error extracting color palette: Palette not found');
     }

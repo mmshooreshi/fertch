@@ -152,7 +152,7 @@ app.get('/color', async (req, res) => {
     const screenshotPath = await defaultScraper(url);
     logger.info(`ScreenShot path: ${screenshotPath}`, { messageType: 'fileSaveSuccess' });
 
-    const { palette, paletteImagePath } = await getImageColors(screenshotPath, count ? count : undefined);
+    const { palette, paletteImagePath } = await getImageColors(screenshotPath, count);
 
     // Convert palette to hex colors
     const paletteHex = palette.map(([r, g, b]) => `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`);
