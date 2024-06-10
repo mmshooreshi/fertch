@@ -8,9 +8,12 @@ import { getImagePalette } from './utils/color.js'; // Import the color utility
 // import { extractColorPalette } from './utils/color.js'; // Import the color utility
 import { uploadToServer } from './utils/upload.js';
 import chalk, { colors } from 'chalk'
+import cors from 'cors';
+
 const app = express();
 const port = 3000;
 
+app.use(cors());
 
 
 
@@ -52,7 +55,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *       400:
  *         description: Invalid input
  */
-app.get('/cache', async (req, res) => {
+app.get('/scrape', async (req, res) => {
   const url = req.query.url;
   const download = req.query.download
 
