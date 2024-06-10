@@ -1,5 +1,8 @@
 import express from 'express';
 import swaggerJsDoc from 'swagger-jsdoc';
+import { URL } from 'url';
+import dns from 'dns';
+import util from 'util';
 import swaggerUi from 'swagger-ui-express';
 import defaultScraper from './scrapers/defaultScraper.js';
 import logger from './logger.js';
@@ -15,6 +18,17 @@ const port = 3000;
 
 app.use(cors());
 
+// Promisify dns.lookup
+const lookup = util.promisify(dns.lookup);
+
+const isValidDomain = async (domain) => {
+  try {
+    await lookup(domain);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 
 logger.log({ level: 'info', message: 'This is a file upload success message', messageType: 'fileUploadSuccess' });
@@ -60,9 +74,24 @@ app.get('/scrape', async (req, res) => {
   const download = req.query.download
 
   if (!url) {
-    logger.warn('URL is required');
+    logger.warn('URL is required', { messageType: 'alert' });
     return res.status(400).send('URL is required');
   }
+
+  let domain;
+  try {
+    domain = new URL(url).hostname;
+  } catch (error) {
+    logger.warn('Invalid URL format', { messageType: 'alert' });
+    return res.status(400).send('Invalid URL format');
+  }
+
+  const domainValid = await isValidDomain(domain);
+  if (!domainValid) {
+    logger.warn('Invalid domain', { messageType: 'alert' });
+    return res.status(400).send('Invalid domain');
+  }
+
 
   logger.info(logger.asciiScrapeStart);
   logger.info(`Scraping started for URL: ${url}`);
@@ -140,10 +169,23 @@ app.get('/color', async (req, res) => {
   const count = parseInt(req.query.count, 10) || 3;  // Ensure count is an integer, default to 3 if not provided
   const download = req.query.download;
   const force = req.query.force === 'true';
-
   if (!url) {
     logger.warn('URL is required', { messageType: 'alert' });
     return res.status(400).send('URL is required');
+  }
+
+  let domain;
+  try {
+    domain = new URL(url).hostname;
+  } catch (error) {
+    logger.warn('Invalid URL format', { messageType: 'alert' });
+    return res.status(400).send('Invalid URL format');
+  }
+
+  const domainValid = await isValidDomain(domain);
+  if (!domainValid) {
+    logger.warn('Invalid domain', { messageType: 'alert' });
+    return res.status(400).send('Invalid domain');
   }
 
   logger.info(`Color extraction started for URL: ${url}`, { messageType: 'processStart' });
