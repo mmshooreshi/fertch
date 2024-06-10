@@ -94,6 +94,7 @@ const processErrorFormat = winston.format.printf(({ timestamp, level, message })
 });
 
 const cacheFoundFormat = winston.format.printf(({ timestamp, level, message }) => {
+
   return chalk.bgHex('#1b1b1b').hex('#00ff00').bold(`${timestamp} [${level}]: Cache found: ${message}`);
 });
 

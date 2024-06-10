@@ -121,7 +121,7 @@ app.get('/scrape', async (req, res) => {
  */
 
 
-const getImageColors = async (imagePath, count=3) => {
+const getImageColors = async (imagePath, count) => {
   try {
     const result = await getImagePalette(imagePath, count);
     return result
@@ -134,12 +134,12 @@ const getImageColors = async (imagePath, count=3) => {
 
 
 
+
 app.get('/color', async (req, res) => {
   const url = req.query.url;
-  const count = req.query.count
-  const download = req.query.download
-
-
+  const count = req.query.count || 3;  // Default count to 3 if not provided
+  const download = req.query.download;
+  const force = req.query.force === 'true';
 
   if (!url) {
     logger.warn('URL is required', { messageType: 'alert' });
@@ -149,7 +149,7 @@ app.get('/color', async (req, res) => {
   logger.info(`Color extraction started for URL: ${url}`, { messageType: 'processStart' });
 
   try {
-    const screenshotPath = await defaultScraper(url);
+    const screenshotPath = await defaultScraper(url, force, count);
     logger.info(`ScreenShot path: ${screenshotPath}`, { messageType: 'fileSaveSuccess' });
 
     const { palette, paletteImagePath } = await getImageColors(screenshotPath, count);

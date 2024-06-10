@@ -34,7 +34,7 @@ const generatePaletteImage = (palette, outputPath) => {
   fs.writeFileSync(outputPath, buffer);
 };
 
-export const getImagePalette = async (inputImagePath, count=10) => {
+export const getImagePalette = async (inputImagePath, count = 10) => {
   try {
     const palette = await extractColorPalette(inputImagePath, count);
     // console.log(chalk.bgBlue('Extracted Color Palette:'), palette);
