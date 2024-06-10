@@ -4,7 +4,8 @@ import { get, set, del } from '../utils/persistentCache.js';
 
 const defaultScraper = async (url, force = false, count) => {
   try {
-    const cacheKey = `${url}-${count}`;
+    // const cacheKey = `${url}-${count}`;
+    const cacheKey = `${url}`;
     if (!force) {
       const cachedData = await get(cacheKey);
       if (cachedData && cachedData.status !== 404) {
@@ -22,7 +23,8 @@ const defaultScraper = async (url, force = false, count) => {
 
   try {
     const data = await scrapePage(url);
-    const cacheKey = `${url}-${count}`;
+    //const cacheKey = `${url}-${count}`;
+    const cacheKey = `${url}`;
     await set(cacheKey, data, { ttl: 60 * 60 * 1000 });
     logger.info(`Caching data for URL: ${url} with count: ${count}`);
     return data;
