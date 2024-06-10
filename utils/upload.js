@@ -6,6 +6,9 @@ import PQueue from 'p-queue';
 import mime from 'mime-types';
 import logger from '../logger.js'
 import process from 'process'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const sftp = new Client();
 const queue = new PQueue({ concurrency: 1 }); // Ensure only one upload at a time
@@ -16,7 +19,7 @@ const connectSftp = async () => {
       host: process.env.SFTP_HOST,
       port: process.env.SFTP_PORT,
       username: process.env.SFTP_USERNAME,
-      privateKey: process.env.SFTP_PRIVATE_KEY_PATH,
+      privateKey: fs.readFileSync(process.env.SFTP_PRIVATE_KEY_PATH),
       passphrase: process.env.SFTP_PASSPHRASE
     });
   } catch (error) {

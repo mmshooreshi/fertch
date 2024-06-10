@@ -40,6 +40,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *           type: string
  *         required: true
  *         description: URL of the page to scrape
+ *       - in: query
+ *         name: download
+ *         schema:
+ *           type: boolean
+ *         required: false
+ *         description: Download palette image
  *     responses:
  *       200:
  *         description: Scraped data
@@ -48,6 +54,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  */
 app.get('/scrape', async (req, res) => {
   const url = req.query.url;
+  const download = req.query.download
 
   if (!url) {
     logger.warn('URL is required');
@@ -59,7 +66,19 @@ app.get('/scrape', async (req, res) => {
 
   try {
     const screenshotPath = await defaultScraper(url);
-    res.json({ screenshotPath });
+
+
+    if (!download) {
+      res.json({ screenshotPath });
+    } else {
+      res.download(screenshotPath, `${new URL(url).hostname}_screenshot.png`, (err) => {
+        if (err) {
+          logger.error(`Error sending file for URL: ${url}`, { messageType: 'processError', error: err.toString() });
+          res.status(500).send(err.toString());
+        }
+      });
+    }
+
   } catch (error) {
     if (!res.headersSent) {
       res.status(500).send(error.toString());
