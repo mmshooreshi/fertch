@@ -8,5 +8,7 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
       - ~/.ssh/id_ed25519_anywrite:/usr/src/.ssh/id_ed25519_anywrite
+      - ./diskcache:/usr/src/app/diskcache
+      - /tmp/app-tmp:/tmp      
     environment:
       NODE_ENV: development

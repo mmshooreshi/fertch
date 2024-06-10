@@ -1,9 +1,11 @@
 import { DiskStore } from 'cache-manager-fs-hash';
+import path from 'path';
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const diskStore = new DiskStore({
-    path: 'diskcache', // Path for cached files
-    ttl: 60 * 60 * 1000, // Time to live in milliseconds
-    zip: true, // Zip files to save disk space
+  path: path.join(__dirname, 'diskcache'),
+  ttl: 60 * 60 * 1000, // Time to live in milliseconds
+  zip: true, // Zip files to save disk space
 });
 
 const get = async (key) => {
