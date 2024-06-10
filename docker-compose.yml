@@ -7,5 +7,6 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+      - ~/.ssh/id_ed25519_anywrite:/usr/src/.ssh/id_ed25519_anywrite
     environment:
       NODE_ENV: development
