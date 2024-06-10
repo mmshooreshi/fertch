@@ -1,0 +1,32 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Logs
+logs/
+*.log
+
+# Cache
+diskcache/
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Image files
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# HTML files
+html/*.html
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
