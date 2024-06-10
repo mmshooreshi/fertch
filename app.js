@@ -104,7 +104,7 @@ app.get('/scrape', async (req, res) => {
  *       - in: query
  *         name: count
  *         schema:
- *           type: integer
+ *           type: number
  *         required: false
  *         description: count of colors in palette
  *       - in: query
