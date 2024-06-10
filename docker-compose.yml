@@ -6,9 +6,14 @@ services:
       - "8002:3000"
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
-      - ~/.ssh/id_ed25519_anywrite:/usr/src/.ssh/id_ed25519_anywrite
+      # - /usr/src/app/node_modules
+      - ~/.ssh/id_ed25519_anywrite:/root/.ssh/id_ed25519_anywrite:ro
       - ./diskcache:/usr/src/app/diskcache
-      - /tmp/app-tmp:/tmp      
+      - /tmp/app-tmp:/tmp
     environment:
       NODE_ENV: development
+      SFTP_HOST: ${SFTP_HOST}
+      SFTP_PORT: ${SFTP_PORT}
+      SFTP_USERNAME: ${SFTP_USERNAME}
+      SFTP_PRIVATE_KEY_PATH: /root/.ssh/id_ed25519_anywrite  # Ensure this matches the volume path
+      SFTP_PASSPHRASE: ${SFTP_PASSPHRASE}
