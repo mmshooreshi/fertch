@@ -34,12 +34,12 @@ const generatePaletteImage = (palette, outputPath) => {
   fs.writeFileSync(outputPath, buffer);
 };
 
-export const getImagePalette = async (inputImagePath, count = 10) => {
+export const getImagePalette = async (inputImagePath, count) => {
   try {
     const palette = await extractColorPalette(inputImagePath, count);
-    // console.log(chalk.bgBlue('Extracted Color Palette:'), palette);
+    console.log(chalk.bgBlue('Extracteing Color Palette with count:'), count);
 
-    const paletteImagePath = path.join(__dirname, path.basename(inputImagePath).replace('.png','_palette.png'));
+    const paletteImagePath = path.join(__dirname, path.basename(inputImagePath).replace('.png',`_c${count}_palette.png`));
     generatePaletteImage(palette, paletteImagePath);
     console.log(chalk.bgWhiteBright(`Palette image saved at: ${paletteImagePath}`));
 
