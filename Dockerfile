@@ -1,13 +1,6 @@
 # Use the official Node.js image based on Alpine
 FROM node:18-alpine
 
-# Install glibc on Alpine
-RUN apk add --no-cache \
-    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
-    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.33-r0/glibc-2.33-r0.apk \
-    && apk add glibc-2.33-r0.apk \
-    && rm glibc-2.33-r0.apk
-
 # Set the working directory
 WORKDIR /usr/src/app
 
@@ -26,7 +19,9 @@ RUN apk add --no-cache \
     pango-dev \
     giflib-dev \
     jpeg-dev \
-    pixman-dev
+    pixman-dev \
+    bash \
+    libc6-compat
 
 # Set Puppeteer configuration to use the installed Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
