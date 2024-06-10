@@ -137,7 +137,7 @@ const getImageColors = async (imagePath, count) => {
 
 app.get('/color', async (req, res) => {
   const url = req.query.url;
-  const count = req.query.count || 3;  // Default count to 3 if not provided
+  const count = parseInt(req.query.count, 10) || 3;  // Ensure count is an integer, default to 3 if not provided
   const download = req.query.download;
   const force = req.query.force === 'true';
 
