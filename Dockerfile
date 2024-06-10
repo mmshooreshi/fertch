@@ -4,6 +4,9 @@ FROM node:18-alpine
 # Set the working directory
 WORKDIR /usr/src/app
 
+RUN apk add --update python3 make g++\
+   && rm -rf /var/cache/apk/*
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
